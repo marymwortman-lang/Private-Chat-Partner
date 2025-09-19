@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Private Chat Partner</title>
+  <meta name="description" content="Mobile-first private chat partner gallery with a clean, modern design." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Mobile-first clean professional styling */
+    :root {
+      --bg-start: #070D1A;
+      --bg-end: #121A2C;
+      --card-bg: #1A2233;
+      --text-primary: #E6F0F6;
+      --text-muted: #8A9CAE;
+      --accent-primary: #8DE3FF; /* Lighter blue for primary accent */
+      --accent-secondary: #00BFB2; /* Teal for secondary accent/buttons */
+      --green-online: #34D399; /* Online status green */
+      --glass-light: rgba(255, 255, 255, 0.08); /* Stronger glass effect */
+      --glass-dark: rgba(255, 255, 255, 0.02); /* Subtle glass for deeper elements */
+      --border-light: rgba(255, 255, 255, 0.08);
+      --shadow-deep: rgba(0, 0, 0, 0.6);
+      --shadow-light: rgba(0, 0, 0, 0.2);
+
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .app {
+      max-width: 480px; /* Slightly wider for better mobile appearance */
+      margin: 0 auto;
+      padding: 16px; /* Increased padding */
+      position: relative;
+      z-index: 1; /* Ensure app content is above potential background effects */
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding: 0 4px; /* Slight horizontal padding */
+    }
+
+    .logo-container {
+      flex: 1;
+    }
+
+    .site-title {
+      font-size: 28px; /* Larger title */
+      font-weight: 800;
+      background: linear-gradient(90deg, #A7F0F7, #4DD0E1, #00BCD4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 4px 30px rgba(0, 255, 255, 0.4), 0 0 2px rgba(255, 255, 255, 0.7);
+    }
+
+    .site-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .header-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--glass-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      font-size: 24px;
+      border: 1px solid var(--border-light);
+    }
+
+    /* Banner */
+    .banner {
+      position: relative;
+      border-radius: 18px; /* More rounded */
+      overflow: hidden;
+      box-shadow: 0 10px 30px var(--shadow-deep), 0 0 0 1px rgba(255, 255, 255, 0.03);
+      margin-top: 18px;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 180px; /* Slightly taller banner */
+      object-fit: cover;
+      display: block;
+    }
+
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.7) 100%); /* Top and bottom gradient for better text visibility */
+    }
+
+    .banner .title-box {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      color: white;
+      font-weight: 700;
+      font-size: 22px; /* Larger banner title */
+      text-transform: capitalize;
+      background: linear-gradient(90deg, var(--glass-light), var(--glass-dark));
+      padding: 10px 16px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px var(--shadow-deep);
+      border: 1px solid var(--border-light);
+    }
+
+    .banner .subtitle {
+      display: block;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Ad area */
+    .ad-top {
+      margin: 20px 0; /* More spacing */
+      display: flex;
+      justify-content: center;
+      min-height: 70px; /* Taller ad slot */
+      background: var(--glass-dark);
+      border-radius: 12px;
+      align-items: center;
+      font-size: 14px;
+      color: var(--text-muted);
+      border: 1px dashed rgba(255,255,255,0.1);
+      box-shadow: 0 2px 10px var(--shadow-light);
+    }
+
+    /* Gallery */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid */
+      gap: 15px; /* More space between cards */
+      margin-top: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px; /* More rounded cards */
+      padding: 10px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 6px 18px var(--shadow-deep);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px var(--shadow-deep), 0 0 0 1px var(--accent-primary);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px; /* Taller images in cards */
+      object-fit: cover;
+      border-radius: 12px; /* Rounded image inside card */
+    }
+
+    .meta {
+      display: flex;
+      flex-direction: column; /* Stack name and button vertically */
+      align-items: flex-start; /* Align text to the left */
+      padding-top: 12px; /* More space above meta */
+      gap: 8px; /* Space between name and button */
+    }
+
+    .name-status {
+      display: flex;
+      align-items: center;
+      gap: 6px; /* Space between name and online dot */
+      width: 100%; /* Ensure name container takes full width for truncation */
+    }
+
+    .name {
+      font-weight: 700;
+      font-size: 17px; /* Slightly larger name */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-grow: 1; /* Allow name to take available space */
+      color: var(--text-primary);
+    }
+
+    .send-btn {
+      background: linear-gradient(90deg, var(--accent-secondary), #00D4C5); /* Teal gradient */
+      border: none;
+      padding: 10px 14px; /* More padding for button */
+      border-radius: 10px; /* More rounded button */
+      color: #012A32; /* Darker text for contrast */
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 191, 178, 0.4);
+      width: 100%; /* Full width button */
+    }
+
+    .send-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 191, 178, 0.6);
+      background: linear-gradient(90deg, #00D4C5, var(--accent-secondary));
+    }
+
+    /* Active dot */
+    .active-dot {
+      width: 10px; /* Smaller dot, as it's inline */
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green-online);
+      box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      flex-shrink: 0; /* Prevent dot from shrinking */
+    }
+
+    /* Message modal */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(1, 6, 12, 0.7) 0%, rgba(1, 6, 12, 0.98) 100%);
+      display: none;
+      align-items: center; /* Center composer vertically */
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+    }
+
+    .composer {
+      background: linear-gradient(180deg, var(--glass-light), var(--glass-dark));
+      width: 100%;
+      max-width: 420px;
+      border-radius: 18px; /* More rounded */
+      padding: 24px; /* More padding */
+      border: 1px solid var(--border-light);
+      box-shadow: 0 12px 35px var(--shadow-deep);
+      animation: fadeInScale 0.3s ease-out forwards;
+    }
+
+    .composer h3 {
+      margin: 0 0 16px 0;
+      font-size: 1.25em; /* Larger title */
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px; /* More space */
+    }
+
+    .msg-input {
+      flex: 1;
+      padding: 14px 16px; /* Increased padding */
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.03);
+      color: inherit;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      font-size: 16px;
+    }
+
+    .msg-input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.7;
+    }
+
+    .msg-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .send-icon {
+      width: 48px; /* Larger icon */
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #042036;
+      font-size: 20px; /* Larger icon arrow */
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .send-icon:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.7);
+    }
+
+    .composer-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* Start chat page */
+    .start-page {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(1, 6, 12, 0.7) 0%, rgba(1, 6, 12, 0.98) 100%);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      z-index: 1001;
+      backdrop-filter: blur(6px);
+    }
+
+    .start-page-content {
+      background: linear-gradient(180deg, var(--glass-light), var(--glass-dark));
+      border-radius: 18px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 12px 35px var(--shadow-deep);
+      padding: 35px; /* More padding */
+      max-width: 340px; /* Slightly wider */
+      width: 100%;
+      animation: fadeInScale 0.3s ease-out forwards;
+    }
+
+    .start-page h2 {
+      margin: 10px 0 12px 0;
+      font-size: 28px; /* Larger heading */
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .start-page p {
+      color: var(--text-muted);
+      font-size: 16px; /* Larger paragraph text */
+      margin-bottom: 25px;
+    }
+
+    .start-live-chat-btn { /* Changed class name for clarity */
+      display: inline-block;
+      padding: 12px 25px; /* More padding */
+      border-radius: 12px;
+      background: #0ea5a0; /* Teal button */
+      color: #012A32;
+      font-weight: 700;
+      font-size: 16px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(14, 165, 160, 0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .start-live-chat-btn:hover { /* Changed class name for clarity */
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(14, 165, 160, 0.7);
+      background: #0DBBB6; /* Slightly lighter on hover */
+    }
+
+    footer {
+      margin: 40px 0 20px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      opacity: 0.8;
+      padding-bottom: 70px; /* Space for sticky footer ad */
+    }
+
+    /* Sticky footer ad */
+    .sticky-footer-ad {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 10px 0; /* Increased padding */
+      background: linear-gradient(0deg, var(--bg-end) 0%, rgba(6, 17, 26, 0.95) 100%); /* Stronger gradient */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(4px); /* Increased blur */
+      z-index: 999;
+      border-top: 1px solid rgba(255,255,255,0.08); /* More prominent border */
+      box-shadow: 0 -4px 15px var(--shadow-deep);
+    }
+    .sticky-footer-ad > div {
+        width: 320px;
+        max-width: 95%; /* Better use of space on small screens */
+        min-height: 60px; /* Taller ad slot */
+        background: var(--glass-dark);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: var(--text-muted);
+        border: 1px dashed rgba(255,255,255,0.15);
+        box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    /* Animations */
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Media Queries for larger screens */
+    @media(min-width:640px){
+      .app {
+        max-width: 720px; /* Allow wider layout on tablets/desktops */
+        padding: 24px;
+      }
+      .grid{
+        grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); /* More columns, wider cards */
+        gap: 20px;
+      }
+      .banner img{height:250px} /* Taller banner on larger screens */
+      .banner .title-box {
+        font-size: 26px;
+        padding: 12px 20px;
+        bottom: 24px;
+        left: 24px;
+      }
+      .banner .subtitle {
+        font-size: 14px;
+      }
+      .ad-top {
+        min-height: 90px;
+      }
+      .sticky-footer-ad > div {
+        min-height: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <header>
+      <div class="logo-container">
+        <div class="site-title">Private Chat Partner</div>
+        <div class="site-subtitle">Mobile-first private chat gallery — English UI</div>
+      </div>
+      <div class="header-icon">💬</div>
+    </header>
+
+    <!-- Banner (user marked specific image as banner) -->
+    <div class="banner">
+      <img src="https://i.imgur.com/LgXjm6l.jpg" alt="banner">
+      <div class="banner-overlay"></div>
+      <div class="title-box">
+        Find your private chat partner
+        <span class="subtitle">Tap 'Send Message' below any profile to start</span>
+      </div>
+    </div>
+
+    <!-- ad (top) -->
+    <div class="ad-top">
+      <div id="container-b3c5e99a6122208e1be8ab74fa97feca">
+        <!-- Top Ad Placeholder -->
+      </div>
+    </div>
+
+    <!-- Gallery of images with send buttons -->
+    <div class="grid" id="gallery">
+      <!-- cards injected by JS -->
+    </div>
+
+    <footer>Design by AI • Enhanced for a unique mobile experience • Ad integrations</footer>
+  </div>
+
+  <!-- sticky footer ad -->
+  <div class="sticky-footer-ad">
+    <div>
+      <div id="ad-footer">
+        <!-- Sticky Footer Ad Placeholder -->
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="composer" role="dialog" aria-modal="true" aria-labelledby="composer-title">
+      <h3 id="composer-title">Send message to <span id="toName" style="color:var(--accent-primary);"></span></h3>
+      <div class="input-row">
+        <input id="msgInput" class="msg-input" placeholder="Write your message..." maxlength="280">
+        <div class="send-icon" id="sendIcon">➤</div>
+      </div>
+      <div class="composer-info">Your message will not be posted publicly.</div>
+    </div>
+  </div>
+
+  <div class="start-page" id="startPage">
+    <div class="start-page-content">
+      <div style="font-size:56px; margin-bottom: 10px;">💬</div>
+      <h2>Message Sent!</h2>
+      <p>Your message was sent successfully. Tap 'Start Live Chat' to connect now!</p>
+      <a id="startLiveChatBtn" class="start-live-chat-btn" href="#">Start Live Chat</a>
+    </div>
+  </div>
+
+  <script>
+    // --- User-provided image list ---
+    const images = [
+      'https://i.imgur.com/N0fCNH8.jpg','https://i.imgur.com/Nhj3JgL.jpg','https://i.imgur.com/WO0nlbZ.jpg','https://i.imgur.com/h8LIOyG.jpg',
+      'https://i.imgur.com/yOIWHrn.jpg','https://i.imgur.com/sH5mCho.jpg','https://i.imgur.com/K2MBgqN.jpg','https://i.imgur.com/vjDC9dZ.jpg',
+      'https://i.imgur.com/BabZ1wE.jpg','https://i.imgur.com/ZBWzDNc.jpg','https://i.imgur.com/l08EyvJ.jpg','https://i.imgur.com/ugx2XT3.jpg',
+      'https://i.imgur.com/KiUlXzA.jpg','https://i.imgur.com/YPVMhO7.jpg','https://i.imgur.com/dSABsiU.jpg','https://i.imgur.com/CfiFbiR.jpg',
+      'https://i.imgur.com/NtD7uBz.jpg','https://i.imgur.com/eF3mqG3.jpg','https://i.imgur.com/Scs4Vwh.jpg','https://i.imgur.com/4Rpiq9T.jpg',
+      'https://i.imgur.com/9Qvy3Fn.jpg','https://i.imgur.com/7JKUDOi.jpg','https://i.imgur.com/vZXzlDn.jpg','https://i.imgur.com/BC7B2bs.jpg',
+      'https://i.imgur.com/okO13Ql.jpg','https://i.imgur.com/J0OJybH.jpg','https://i.imgur.com/HOVBZP8.jpg','https://i.imgur.com/DiNSt6G.jpg',
+      'https://i.imgur.com/dDtvJvT.jpg','https://i.imgur.com/0r8vf7W.jpg','https://i.imgur.com/BNiME3L.jpg','https://i.imgur.com/cttkfUv.jpg',
+      'https://i.imgur.com/U3VwT8O.jpg','https://i.imgur.com/0vvMJhe.jpg','https://i.imgur.com/EwfBqAP.jpg','https://i.imgur.com/WGGMm5g.jpg',
+      'https://i.imgur.com/Drcc8p5.jpg','https://i.imgur.com/IFd7HXD.jpg','https://i.imgur.com/A2o5K8c.jpg','https://i.imgur.com/5EgHnDT.jpg',
+      'https://i.imgur.com/457Mr3Z.jpg','https://i.imgur.com/0rT7UMY.jpg','https://i.imgur.com/mVNm7s3.jpg'
+    ];
+
+    // List of American female names for each photo (same length)
+    const names = [
+      'Emma','Olivia','Ava','Isabella','Sophia','Mia','Charlotte','Amelia','Harper','Evelyn','Abigail','Emily',
+      'Ella','Madison','Scarlett','Victoria','Aria','Grace','Chloe','Camila','Penelope','Riley','Layla','Nora',
+      'Lily','Zoey','Mila','Aubrey','Hannah','Lillian','Addison','Eleanor','Natalie','Zoe','Leah','Hazel',
+      'Violet','Aurora','Savannah','Audrey','Brooklyn','Bella','Claire','Skylar','Lucy','Anna','Sarah'
+    ];
+
+    const gallery = document.getElementById('gallery');
+    images.forEach((src, idx) => {
+      const card = document.createElement('div'); card.className='card';
+      // Ensure names array has an entry, fallback to 'Partner' if not
+      const name = names[idx] || 'Partner'; 
+      card.innerHTML = `
+        <img src='${src}' alt='profile-${idx} - ${name}'>
+        <div class='meta'>
+          <div class='name-status'>
+            <div class='name'>${name}</div>
+            <div class='active-dot' title='online'></div>
+          </div>
+          <button class='send-btn' data-idx='${idx}'>Send Message</button>
+        </div>
+      `;
+      gallery.appendChild(card);
+    });
+
+    // Composer logic
+    const overlay = document.getElementById('overlay');
+    const toName = document.getElementById('toName');
+    const msgInput = document.getElementById('msgInput');
+    const sendIcon = document.getElementById('sendIcon');
+    const startPage = document.getElementById('startPage');
+    const startLiveChatBtn = document.getElementById('startLiveChatBtn');
+    let currentIdx = null;
+
+    // YOUR_WEB_APP_URL এখানে তোমার Apps Script ওয়েব অ্যাপের URL দাও
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz0XsrAgSO-Y26qzI7j8Dc5CzTJYsE82sdMmSVuwxCKzH6k8WM3oRBDi6EY8ZdsuSfa/exec';
+
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.send-btn');
+      if(btn){
+        currentIdx = btn.dataset.idx;
+        toName.textContent = names[currentIdx] || 'Partner';
+        msgInput.value='';
+        overlay.style.display='flex';
+        msgInput.focus();
+      }
+    });
+
+    // dismiss overlay when tapping outside composer
+    overlay.addEventListener('click', (e)=>{
+      if(e.target === overlay) {
+        overlay.style.display='none';
+      }
+    });
+
+    sendIcon.addEventListener('click', ()=>{
+      const text = msgInput.value.trim();
+      if (text) {
+        const recipientName = toName.textContent; // যার কাছে মেসেজ যাচ্ছে তার নাম
+        const userAgent = navigator.userAgent; // ইউজারের ইউজার এজেন্ট
+        
+        // Google Apps Script-এ ডেটা পাঠানোর জন্য ফাংশন কল করা
+        sendDataToGoogleSheet(text, userAgent, recipientName)
+          .then(response => {
+            console.log('Sheet API response:', response);
+            // যদি সফলভাবে ডেটা পাঠানো হয়, তাহলে UI আপডেট করো
+            overlay.style.display='none';
+            startPage.style.display='flex';
+            startLiveChatBtn.href = 'https://remarkillustration.com/vsnrrkqbrb?key=875a394a0867b7d59e2cb13e1f009402';
+            try{ localStorage.setItem('lastMessage@'+(names[currentIdx]||currentIdx), text); }catch(err){console.error("Local storage error:", err)}
+          })
+          .catch(error => {
+            console.error('Error sending data to Google Sheet:', error);
+            alert('Failed to send message. Please try again.'); // ইউজারকে ত্রুটি সম্পর্কে অবহিত করো
+            // যদি ডেটা পাঠাতে ব্যর্থ হয়, তাহলে কি করবে তা এখানে সিদ্ধান্ত নিতে পারো।
+          });
+
+      } else {
+        alert("Please write a message before sending.");
+      }
+    });
+
+    startLiveChatBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = startLiveChatBtn.href; // Redirect to ad link
+    });
+
+    // Google Apps Script ওয়েব অ্যাপে ডেটা পাঠানোর ফাংশন
+    async function sendDataToGoogleSheet(message, userAgent, recipientName) {
+      const data = {
+        message: message,
+        userAgent: userAgent,
+        recipientName: recipientName
+      };
+
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          mode: 'no-cors', // Apps Script-এর জন্য সাধারণত 'no-cors' প্রয়োজন হয়
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        // 'no-cors' মোডে রেসপন্স অবজেক্ট লিমিটেড হয়, তাই সরাসরি JSON পার্স করা যাবে না
+        // কিন্তু রিকোয়েস্ট সফলভাবে হয়েছে কিনা তা সার্ভার সাইডে লগিং দেখে বোঝা যাবে।
+        console.log("Data sent. Due to 'no-cors', response details are limited. Check Apps Script Executions.");
+        return { status: 'success', message: 'Request sent to Apps Script.' };
+
+      } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+      }
+    }
+
+    // --- Insert user ad scripts as provided ---
+    (function insertUserAds(){
+      // Top Ad
+      try{
+        var s1 = document.createElement('script'); s1.type='text/javascript'; s1.async=true; s1.dataset.cfasync='false';
+        s1.src='//remarkillustration.com/b3c5e99a6122208e1be8ab74fa97feca/invoke.js';
+        document.getElementById('container-b3c5e99a6122208e1be8ab74fa97feca').innerHTML = ''; // Clear placeholder
+        document.getElementById('container-b3c5e99a6122208e1be8ab74fa97feca').appendChild(s1);
+      }catch(e){console.warn("Error loading top ad:", e)}
+
+      // Footer Ad (using the first one provided in the list for consistency)
+      try{
+        var s2 = document.createElement('script'); s2.type='text/javascript'; s2.src='//remarkillustration.com/9c/48/a3/9c48a30da51b20fb7807a34b64893742.js';
+        document.getElementById('ad-footer').innerHTML = ''; // Clear placeholder
+        document.getElementById('ad-footer').appendChild(s2);
+      }catch(e){console.warn("Error loading footer ad:", e)}
+    })();
+
+    // Small UX: prevent overscroll behind overlay on mobile
+    overlay.addEventListener('touchmove', function(e){ e.preventDefault(); }, {passive:false});
+    startPage.addEventListener('touchmove', function(e){ e.preventDefault(); }, {passive:false});
+
+  </script>
+</body>
+</html>
