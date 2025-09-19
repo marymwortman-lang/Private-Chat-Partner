@@ -488,8 +488,8 @@
     <!-- ad (top) -->
     <div class="ad-top">
       <div id="container-b3c5e99a6122208e1be8ab74fa97feca">
-        <!-- Top Ad Placeholder -->
-        No ads here.
+        <!-- The ad script will be loaded directly here -->
+        <script type='text/javascript' src='//remarkillustration.com/9c/48/a3/9c48a30da51b20fb7807a34b64893742.js'></script>
       </div>
     </div>
 
@@ -504,8 +504,8 @@
   <div class="sticky-footer-ad">
     <div>
       <div id="ad-footer">
-        <!-- Sticky Footer Ad Placeholder -->
-        No ads here.
+        <!-- The ad script will be loaded directly here -->
+        <script type='text/javascript' src='//remarkillustration.com/9c/48/a3/9c48a30da51b20fb7807a34b64893742.js'></script>
       </div>
     </div>
   </div>
@@ -659,17 +659,6 @@
       }
     }
 
-    // --- User ad scripts removed ---
-    // The ad insertion function is now empty or removed.
-    (function insertUserAds(){
-      // No ad scripts will be inserted here.
-      // You can add a console log or some placeholder text if you wish
-      // For example, to indicate that no ads are being loaded.
-      document.getElementById('container-b3c5e99a6122208e1be8ab74fa97feca').innerHTML = 'No ads here.';
-      document.getElementById('ad-footer').innerHTML = 'No ads here.';
-      console.log("Ad script insertion has been disabled as requested.");
-    })();
-
     // Small UX: prevent overscroll behind overlay on mobile
     overlay.addEventListener('touchmove', function(e){ e.preventDefault(); }, {passive:false});
     startPage.addEventListener('touchmove', function(e){ e.preventDefault(); }, {passive:false});
@@ -677,5 +666,3 @@
   </script>
 </body>
 </html>
-<script type='text/javascript' src='//remarkillustration.com/9c/48/a3/9c48a30da51b20fb7807a34b64893742.js'></script>
-
