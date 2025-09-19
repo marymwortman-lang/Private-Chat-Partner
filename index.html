@@ -489,6 +489,7 @@
     <div class="ad-top">
       <div id="container-b3c5e99a6122208e1be8ab74fa97feca">
         <!-- Top Ad Placeholder -->
+        No ads here.
       </div>
     </div>
 
@@ -504,6 +505,7 @@
     <div>
       <div id="ad-footer">
         <!-- Sticky Footer Ad Placeholder -->
+        No ads here.
       </div>
     </div>
   </div>
@@ -657,22 +659,15 @@
       }
     }
 
-    // --- Insert user ad scripts as provided ---
+    // --- User ad scripts removed ---
+    // The ad insertion function is now empty or removed.
     (function insertUserAds(){
-      // Top Ad
-      try{
-        var s1 = document.createElement('script'); s1.type='text/javascript'; s1.async=true; s1.dataset.cfasync='false';
-        s1.src='//remarkillustration.com/b3c5e99a6122208e1be8ab74fa97feca/invoke.js';
-        document.getElementById('container-b3c5e99a6122208e1be8ab74fa97feca').innerHTML = ''; // Clear placeholder
-        document.getElementById('container-b3c5e99a6122208e1be8ab74fa97feca').appendChild(s1);
-      }catch(e){console.warn("Error loading top ad:", e)}
-
-      // Footer Ad (using the first one provided in the list for consistency)
-      try{
-        var s2 = document.createElement('script'); s2.type='text/javascript'; s2.src='//remarkillustration.com/9c/48/a3/9c48a30da51b20fb7807a34b64893742.js';
-        document.getElementById('ad-footer').innerHTML = ''; // Clear placeholder
-        document.getElementById('ad-footer').appendChild(s2);
-      }catch(e){console.warn("Error loading footer ad:", e)}
+      // No ad scripts will be inserted here.
+      // You can add a console log or some placeholder text if you wish
+      // For example, to indicate that no ads are being loaded.
+      document.getElementById('container-b3c5e99a6122208e1be8ab74fa97feca').innerHTML = 'No ads here.';
+      document.getElementById('ad-footer').innerHTML = 'No ads here.';
+      console.log("Ad script insertion has been disabled as requested.");
     })();
 
     // Small UX: prevent overscroll behind overlay on mobile
